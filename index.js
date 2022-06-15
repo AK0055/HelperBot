@@ -1,4 +1,4 @@
-console.log('helloworld')
+console.log('Changed')
 console.log('`hb help')
 require("dotenv").config()
 const Discord = require("discord.js")
