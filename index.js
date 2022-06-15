@@ -55,6 +55,54 @@ client.on("message", msg => {
       };
       search.json(params, callback);
       }
+
+      else if(splitted[1]==="med"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+      }
+      const params = {
+        engine: "google",
+        q: result
+      };
+      const callback = function(data) {
+        console.log(data["inline_videos"][0].link);
+        msg.reply(data["inline_videos"][0].link)
+        result=''
+      };
+      search.json(params, callback);
+      }
+
+      else if(splitted[1]==="dict"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+      }
+      const params = {
+        engine: "google",
+        q: result
+      };
+      const callback = function(data) {
+        console.log(data["inline_videos"][0].link);
+        msg.reply(data["inline_videos"][0].link)
+        result=''
+      };
+      search.json(params, callback);
+      }
+
+      else if(splitted[1]==="buy"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+      }
+      const params = {
+        engine: "google",
+        q: result
+      };
+      const callback = function(data) {
+        console.log(data["inline_videos"][0].link);
+        msg.reply(data["inline_videos"][0].link)
+        result=''
+      };
+      search.json(params, callback);
+      }
     
     
     console.log(result)
