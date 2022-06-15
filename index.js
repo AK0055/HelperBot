@@ -1,5 +1,3 @@
-console.log('Changed')
-console.log('`hb help')
 require("dotenv").config()
 const Discord = require("discord.js")
 const fs = require("fs")
@@ -9,14 +7,14 @@ const search = new SerpApi.GoogleSearch("f875a84eeecd87137c342bcfb7b1509828c6504
 
   var result=''
 client.on("message", msg => {
-    if (msg.content === "`hb help") {
-      msg.reply("You have called for help!")
+    if (msg.content === "hb help") {
+      msg.reply("You have called for help!\n 1. For searching a place- hb loc <yoursearch>\n 2. For searching a media- hb play <yoursearch>\n 3. For searching food - hb food <yoursearch>\n 4. For weather- hb weather <yourplace>")
     }
   })
   client.on("message", msg => {
     
     var splitted=msg.content.split(' ')
-    if (splitted[0] === "`hb") {
+    if (splitted[0] === "hb") {
       if(splitted[1]==="loc"){
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
@@ -59,14 +57,16 @@ client.on("message", msg => {
       else if(splitted[1]==="med"){
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
+            result = result.concat("medication details")
+            
       }
       const params = {
         engine: "google",
         q: result
       };
       const callback = function(data) {
-        console.log(data["inline_videos"][0].link);
-        msg.reply(data["inline_videos"][0].link)
+        console.log(data["organic_results"][0].link);
+        msg.reply(data["organic_results"][0].link)
         result=''
       };
       search.json(params, callback);
@@ -81,8 +81,8 @@ client.on("message", msg => {
         q: result
       };
       const callback = function(data) {
-        console.log(data["inline_videos"][0].link);
-        msg.reply(data["inline_videos"][0].link)
+        console.log(data["answer_box"]["definitions"]);
+        msg.reply(data["answer_box"]["definitions"])
         result=''
       };
       search.json(params, callback);
@@ -91,14 +91,15 @@ client.on("message", msg => {
       else if(splitted[1]==="buy"){
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
+            result = result.concat("amazon")
       }
       const params = {
         engine: "google",
         q: result
       };
       const callback = function(data) {
-        console.log(data["inline_videos"][0].link);
-        msg.reply(data["inline_videos"][0].link)
+        console.log(data["shopping_results"][0].link);
+        msg.reply(data["shopping_results"][0].link)
         result=''
       };
       search.json(params, callback);
