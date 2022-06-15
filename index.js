@@ -3,7 +3,7 @@ const Discord = require("discord.js")
 const fs = require("fs")
 const client = new Discord.Client()
 const SerpApi = require('google-search-results-nodejs');
-const search = new SerpApi.GoogleSearch("f875a84eeecd87137c342bcfb7b1509828c650477f8903b6997ccf4fd4b805b7");
+const search = new SerpApi.GoogleSearch(process.env.SEARCH_TOKEN);
 
   var result=''
 client.on("message", msg => {
@@ -38,7 +38,7 @@ client.on("message", msg => {
       };
       search.json(params, callback);
       }
-      else if(splitted[1]==="song"){
+      else if(splitted[1]==="play"){
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
       }
@@ -104,7 +104,37 @@ client.on("message", msg => {
       };
       search.json(params, callback);
       }
-    
+      else if(splitted[1]==="recipe"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+      }
+      const params = {
+        engine: "google",
+        q: result
+      };
+      const callback = function(data) {
+        console.log(data["recipes_results"][0].link);
+        msg.reply(data["recipes_results"][0].link)
+        result=''
+      };
+      search.json(params, callback);
+      }
+      else if(splitted[1]==="weather"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+            result = result.concat("weather")
+      }
+      const params = {
+        engine: "google",
+        q: result
+      };
+      const callback = function(data) {
+        console.log(((parseInt(data["answer_box"]["temperature"]- 32)) * 5/9).toString()+'°C');
+        msg.reply(((parseInt(data["answer_box"]["temperature"]- 32)) * 5/9).toString()+'°C')
+        result=''
+      };
+      search.json(params, callback);
+      }
     
     console.log(result)
    
