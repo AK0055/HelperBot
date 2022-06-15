@@ -8,7 +8,7 @@ const search = new SerpApi.GoogleSearch(process.env.SEARCH_TOKEN);
   var result=''
 client.on("message", msg => {
     if (msg.content === "hb help") {
-      msg.reply("You have called for help!\n 1. For searching a place- hb loc <yoursearch>\n 2. For searching a media- hb play <yoursearch>\n 3. For searching food - hb food <yoursearch>\n 4. For weather- hb weather <yourplace>")
+      msg.reply("You have called for help!\n✈️ For searching a place- `hb loc <yoursearch>`\n\n🎵 For searching a media- `hb play <yoursearch>`\n\n🍔 For searching food - `hb food <yoursearch>`\n\n🌦️ For weather- `hb weather <yourplace>`\n\n❔ For word meaning- `hb dict <yourword>`\n\n🛒 For shopping item- `hb buy <youritem>`\n\n💊 For medication details- `hb med <yourmed>`\n")
     }
   })
   client.on("message", msg => {
@@ -129,8 +129,10 @@ client.on("message", msg => {
         q: result
       };
       const callback = function(data) {
-        console.log(((parseInt(data["answer_box"]["temperature"]- 32)) * 5/9).toString()+'°C');
-        msg.reply(((parseInt(data["answer_box"]["temperature"]- 32)) * 5/9).toString()+'°C')
+        console.log(((parseInt(data["answer_box"]["temperature"]- 32)) * 5/9).toFixed(2).toString()+'°C\n'+"Forecast: "+data["answer_box"]["forecast"][0]["weather"]);
+        var a = (parseInt(data["answer_box"]["temperature"]- 32) * 5/9).toFixed(2).toString()
+        msg.reply("Temperature: "+a+'°C\n'+"Might expect "+data["answer_box"]["forecast"][0]["weather"]+"\n")
+       
         result=''
       };
       search.json(params, callback);
