@@ -21,7 +21,7 @@ client.on("message", msg => {
   if (splitted[0] === "hb") {
     try{
       if(splitted[1] === "help"){
-        msg.reply("You have called for help!\n✈️ For searching a place- `hb loc <yoursearch>`\n\n🎵 For searching a media- `hb play <yoursearch>`\n\n🍔 For searching food - `hb food <yoursearch>`\n\n🌦️ For weather- `hb weather <yourplace>`\n\n❔ For word meaning- `hb dict <yourword>`\n\n🛒 For shopping item- `hb buy <youritem>`\n\n💊 For medication details- `hb med <yourmed>`\n\n🖼️ To reverse search an image URL- `hb isearch <yourimageurl>`\n")
+        msg.reply("You have called for help!\n✈️ For searching a place- `hb loc <yoursearch>`\n\n🎵 For searching a media- `hb play <yoursearch>`\n\n🍔 For searching food - `hb food <yoursearch>`\n\n🌦️ For weather- `hb weather <yourplace>`\n\n❔ For word meaning- `hb dict <yourword>`\n\n❓ For urban dictionary meaning- `hb urbandict <yourword>`\n\n💰 To convert currencies- `hb currency <your-currency-value> <your-currency-code> <desired-currency-code>`\n\n🛒 For shopping item- `hb buy <youritem>`\n\n💊 For medication details- `hb med <yourmed>`\n\n🖼️ To reverse search an image URL- `hb isearch <yourimageurl>`\n")
 
       }
       else if(splitted[1]==="loc"){
@@ -37,17 +37,17 @@ client.on("message", msg => {
       const callback = function(data) {
        try {
             console.log(data["knowledge_graph"]["local_map"]["link"]);
-            msg.reply(data["knowledge_graph"]["local_map"]["link"])
+            msg.reply('Your place can be found here: '+data["knowledge_graph"]["local_map"]["link"])
             result=''
         }
         catch(TypeError){
           try{
             console.log(data["local_map"]['link']);
-        msg.reply(data["local_map"]['link'])
+        msg.reply('Your place can be found here: '+data["local_map"]['link'])
         result=''
           }
           catch(err){
-            msg.reply(data["organic_results"][0].link)
+            msg.reply('Your place can be found here: '+data["organic_results"][0].link)
             result=''
           }
             
@@ -72,7 +72,7 @@ client.on("message", msg => {
         result=''}
         catch(TypeError){
           console.log(data["organic_results"][0].link);
-          msg.reply(data["organic_results"][0].link)
+          msg.reply('Have fun with it! '+data["organic_results"][0].link)
           result=''
         }
       };
@@ -92,7 +92,7 @@ client.on("message", msg => {
       const callback = function(data) {
         
           console.log(data["organic_results"][0].link);
-          msg.reply(data["organic_results"][0].link)
+          msg.reply('Here are the details about the medicine: '+data["organic_results"][0].link)
           result=''
         
         
@@ -101,31 +101,59 @@ client.on("message", msg => {
       search.json(params, callback);
       }
 
-      else if(splitted[1]==="dict"){
+      else if(splitted[1]==="urbandict"){
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
             
       }
 
-const options = {
-  method: 'GET',
-  url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
-  params: {term: result},
-  headers: {
-    'X-RapidAPI-Key': '1b79a65a27msh8abeb909a4262ecp145783jsn49bb1e416dc8',
-    'X-RapidAPI-Host': 'mashape-community-urban-dictionary.p.rapidapi.com'
-  }
-};
+          const options = {
+            method: 'GET',
+            url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
+            params: {term: result},
+            headers: {
+              'X-RapidAPI-Key': '1b79a65a27msh8abeb909a4262ecp145783jsn49bb1e416dc8',
+              'X-RapidAPI-Host': 'mashape-community-urban-dictionary.p.rapidapi.com'
+            }
+          };
 
-axios.request(options).then(function (response) {
-	msg.reply(response.data["list"][0]["definition"])
-  result=''
-}).catch(function (error) {
-	console.error(error);
-  msg.reply('Thats a weird word')
-  result=''
-});
+          axios.request(options).then(function (response) {
+            msg.reply('Your word officially/unofficially means..'+response.data["list"][0]["definition"])
+            result=''
+          }).catch(function (error) {
+            console.error(error);
+            msg.reply('Thats a weird word')
+            result=''
+          });
       }
+      else if(splitted[1]==="dict"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+            result = result.concat("meaning")
+      }
+
+      const params = {
+        engine: "google",
+        q: result
+      };
+      const callback = function(data) {
+        try{
+          if(data["answer_box"]["definition"]===undefined) throw TypeError;
+          else{
+            msg.reply('Here is meaning: '+data["answer_box"]["definitions"])
+            result=''
+          }
+        
+        }
+        catch(TypeError){
+          console.log(data["organic_results"][0]);
+          msg.reply('You can refer this link: '+data["organic_results"][0]['link'])
+          result=''
+        }
+      };
+      search.json(params, callback);
+      }
+
 
       else if(splitted[1]==="buy"){
         for (let i = 2; i < splitted.length; i++) {
@@ -139,12 +167,12 @@ axios.request(options).then(function (response) {
       const callback = function(data) {
         try{
         console.log(data["shopping_results"][0].link);
-        msg.reply(data["shopping_results"][0].link)
+        msg.reply('Here is the item you are looking for: '+data["shopping_results"][0].link)
         result=''
         }
         catch(TypeError){
           console.log(data["organic_results"][0].link);
-          msg.reply(data["organic_results"][0].link)
+          msg.reply('Here is the item you are looking for: '+data["organic_results"][0].link)
           result=''
         }
       };
@@ -161,13 +189,13 @@ axios.request(options).then(function (response) {
       const callback = function(data) {
         try{
           console.log(data["recipes_results"][0].link);
-          msg.reply(data["recipes_results"][0].link)
+          msg.reply('Here is the recipe! '+data["recipes_results"][0].link)
           result=''
         }
         
         catch(TypeError){
           console.log(data["organic_results"][0].link);
-          msg.reply(data["organic_results"][0].link)
+          msg.reply('Here is the recipe! '+data["organic_results"][0].link)
           result=''
         }
       };
@@ -186,14 +214,14 @@ axios.request(options).then(function (response) {
         try{
           console.log(((parseInt(data["answer_box"]["temperature"]- 32)) * 5/9).toFixed(2).toString()+'°C\n'+"Forecast: "+data["answer_box"]["forecast"][0]["weather"]);
           var a = (parseInt(data["answer_box"]["temperature"]- 32) * 5/9).toFixed(2).toString()
-          msg.reply("Temperature: "+a+'°C\n'+"Might expect "+data["answer_box"]["forecast"][0]["weather"]+"\n")
+          msg.reply("Temperature: "+a+'°C\n'+"Might expect: "+data["answer_box"]["forecast"][0]["weather"]+"\n")
          
           result=''
         }
         
         catch(TypeError){
           console.log(data["organic_results"][0].link);
-          msg.reply(data["organic_results"][0].link)
+          msg.reply('Your search:'+data["organic_results"][0].link)
           result=''
         }
       };
@@ -209,7 +237,7 @@ axios.request(options).then(function (response) {
       };
       const callback = function(data) {
         console.log(data["organic_results"][0].link);
-        msg.reply(data["organic_results"][0].link)
+        msg.reply('Your search:'+data["organic_results"][0].link)
         result=''
       };
       search.json(params, callback);
@@ -223,20 +251,51 @@ axios.request(options).then(function (response) {
       
       const callback = function(data) {
         console.log(data["inline_images"][0]["source"]);
-        msg.reply(data["inline_images"][0]["source"])
+        msg.reply('The image is found from this link:'+data["inline_images"][0]["source"])
       };
       
       // Show result as JSON
       search.json(params, callback);
       }
-    else  msg.reply("Please use these commands: \n✈️ For searching a place- `hb loc <yoursearch>`\n\n🎵 For searching a media- `hb play <yoursearch>`\n\n🍔 For searching food - `hb food <yoursearch>`\n\n🌦️ For weather- `hb weather <yourplace>`\n\n❔ For word meaning- `hb dict <yourword>`\n\n🛒 For shopping item- `hb buy <youritem>`\n\n💊 For medication details- `hb med <yourmed>`\n\n🖼️ To reverse search an image URL- `hb isearch <yourimageurl>`\n")
+      else if(splitted[1]==="currency"){
+        var from=splitted[3].toUpperCase();
+        var to=splitted[4].toUpperCase();
+        var val=splitted[2]
+        const encodedParams = new URLSearchParams();
+        encodedParams.append("from-value", val);
+        encodedParams.append("from-type", from);
+        encodedParams.append("to-type", to);
+        
+        const options = {
+          method: 'POST',
+          url: 'https://community-neutrino-currency-conversion.p.rapidapi.com/convert',
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'X-RapidAPI-Key': '1b79a65a27msh8abeb909a4262ecp145783jsn49bb1e416dc8',
+            'X-RapidAPI-Host': 'community-neutrino-currency-conversion.p.rapidapi.com'
+          },
+          data: encodedParams
+        };
+        
+        axios.request(options).then(function (response) {
+          console.log(response.data);
+          var res=parseFloat(response.data["result"]).toFixed(2)
+          msg.reply(val+' '+from+' is: '+res+' '+to)
+          res=''
+          from=''
+          to=''
+
+        }).catch(function (error) {
+          console.error(error);
+          msg.reply('Invalid command')
+          res=''
+          from=''
+          to=''
+        });
+      }
+    else  msg.reply("Please use `hb help` for the correct commands")
 
     console.log(result)
-   
-      
-      
-      
-      // Show result as JSON
       
     }
     catch(err){
@@ -249,7 +308,7 @@ axios.request(options).then(function (response) {
   };
   const callback = function(data) {
     console.log(data["organic_results"][0].link);
-    msg.reply(data["organic_results"][0].link)
+    msg.reply('Your search '+data["organic_results"][0].link)
     result=''
   };
   search.json(params, callback);
