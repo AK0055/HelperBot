@@ -1,4 +1,5 @@
 require("dotenv").config()
+const axios = require("axios");
 const Discord = require("discord.js")
 const fs = require("fs")
 const client = new Discord.Client()
@@ -105,23 +106,22 @@ client.on("message", msg => {
             result = result.concat(splitted[i]+' ');
             
       }
-      result = result.concat("meaning")
-      const params = {
-        engine: "google",
-        q: result
-      };
-      const callback = function(data) {
-        try {
-          console.log(data["answer_box"]["definitions"]);
-        msg.reply(data["answer_box"]["definitions"])
-        result=''
-      }
-      catch(DiscordAPIError){
-        msg.send('Your search cannot be found')
-      }
-       
-      };
-      search.json(params, callback);
+
+const options = {
+  method: 'GET',
+  url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
+  params: {term: result},
+  headers: {
+    'X-RapidAPI-Key': '1b79a65a27msh8abeb909a4262ecp145783jsn49bb1e416dc8',
+    'X-RapidAPI-Host': 'mashape-community-urban-dictionary.p.rapidapi.com'
+  }
+};
+
+axios.request(options).then(function (response) {
+	msg.reply(response.data["list"][0]["definition"])
+}).catch(function (error) {
+	console.error(error);
+});
       }
 
       else if(splitted[1]==="buy"){
