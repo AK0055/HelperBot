@@ -19,7 +19,7 @@ client.on("message", msg => {
   if (splitted[0] === "hb") {
     try{
       if(splitted[1] === "help"){
-        msg.reply("You have called for help!\n✈️ For searching a place- `hb loc <yoursearch>`\n\n🎵 For searching a media- `hb play <yoursearch>`\n\n🍔 For searching food - `hb food <yoursearch>`\n\n🌦️ For weather- `hb weather <yourplace>`\n\n❔ For word meaning- `hb dict <yourword>`\n\n❓ For urban dictionary meaning- `hb urbandict <yourword>`\n\n💰 To convert currencies- `hb currency <your-currency-value> <your-currency-code> <desired-currency-code>`\n\n🛒 For shopping item- `hb buy <youritem>`\n\n💊 For medication details- `hb med <yourmed>`\n\n🖼️ To reverse search an image URL- `hb isearch <yourimageurl>`\n")
+        msg.reply("You have called for help!\n✈️ For searching a place- `hb loc <yoursearch>`\n\n🎵 For searching a media- `hb play <yoursearch>`\n\n🍔 For searching food recipe - `hb food <yoursearch>`\n\n🌦️ For weather- `hb weather <yourplace>`\n\n❔ For word meaning- `hb dict <yourword>`\n\n❓ For urban dictionary meaning- `hb urbandict <yourword>`\n\n💰 To convert currencies- `hb currency <your-currency-value> <your-currency-code> <desired-currency-code>`\n\n🛒 For shopping item- `hb buy <youritem>`\n\n💊 For medication details- `hb med <yourmed>`\n\n🖼️ To reverse search an image URL- `hb isearch <yourimageurl>`\n")
 
       }
       else if(splitted[1]==="loc"){
@@ -176,7 +176,7 @@ client.on("message", msg => {
       };
       search.json(params, callback);
       }
-      else if(splitted[1]==="recipe"){
+      else if(splitted[1]==="food"){
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
       }
