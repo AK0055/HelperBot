@@ -10,10 +10,8 @@ const app = express();
 const router = express.Router();
 router.get("/", async (req, res) => {
   try {
-    res.json({
-      status: 200,
-      message: "Bot is running successfully",
-    });
+    res.write('<html><h1>Bot is running successfully!</html>');
+
     var result=''
 client.on("message", msg => {
   
