@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
   try {
     res.json({
       status: 200,
-      message: "Get data has successfully",
+      message: "Bot is running successfully",
     });
     var result=''
 client.on("message", msg => {
