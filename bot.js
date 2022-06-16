@@ -10,7 +10,7 @@ const app = express();
 const router = express.Router();
 router.get("/", async (req, res) => {
   try {
-    res.write('<html><h1>Bot is running successfully!</html>');
+    res.write('<html><style>h3 {text-align: center;}</style><h3>HelperBot is up and running!</h3></html>');
 
     var result=''
 client.on("message", msg => {
@@ -110,7 +110,7 @@ client.on("message", msg => {
             url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
             params: {term: result},
             headers: {
-              'X-RapidAPI-Key': '1b79a65a27msh8abeb909a4262ecp145783jsn49bb1e416dc8',
+              'X-RapidAPI-Key': process.env.RAPID_KEY_TOKEN,
               'X-RapidAPI-Host': 'mashape-community-urban-dictionary.p.rapidapi.com'
             }
           };
@@ -269,7 +269,7 @@ client.on("message", msg => {
           url: 'https://community-neutrino-currency-conversion.p.rapidapi.com/convert',
           headers: {
             'content-type': 'application/x-www-form-urlencoded',
-            'X-RapidAPI-Key': '1b79a65a27msh8abeb909a4262ecp145783jsn49bb1e416dc8',
+            'X-RapidAPI-Key': process.env.RAPID_KEY_TOKEN,
             'X-RapidAPI-Host': 'community-neutrino-currency-conversion.p.rapidapi.com'
           },
           data: encodedParams
