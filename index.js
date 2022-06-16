@@ -3,7 +3,7 @@ const app = express();
 const product = require("./bot");
 app.use(express.json({ extended: false }));
 
-app.use("/bot", product);
+app.use("/bots", product);
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {console.log(`Server is running in port ${PORT}`)
 });
