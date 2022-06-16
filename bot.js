@@ -119,8 +119,11 @@ const options = {
 
 axios.request(options).then(function (response) {
 	msg.reply(response.data["list"][0]["definition"])
+  result=''
 }).catch(function (error) {
 	console.error(error);
+  msg.reply('Thats a weird word')
+  result=''
 });
       }
 
