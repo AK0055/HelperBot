@@ -122,6 +122,23 @@ client.on("message", msg => {
       };
       search.json(params, callback);
       }
+      /* else if(splitted[1]==="store"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+          
+            
+      }
+      let channel = msg.channel
+      //msg.author.send(channel)
+      channel.messages.fetch({ limit: 1 }).then(messages => {
+        let lastMessage = messages.first();
+        msg.reply(lastMessage)
+        if (!lastMessage.author.bot) {
+          // The author of the last message wasn't a bot
+        }
+      })
+      .catch(console.error);
+      } */
 
       else if(splitted[1]==="urbandict"){
         for (let i = 2; i < splitted.length; i++) {
@@ -334,6 +351,7 @@ client.on("message", msg => {
     result=''
   };
   search.json(params, callback);
+  //console.log(err)
 
     }
     }
