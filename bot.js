@@ -76,7 +76,28 @@ client.on("message", msg => {
       };
       search.json(params, callback);
       }
-
+      else if(splitted[1]==="song"){
+        for (let i = 2; i < splitted.length; i++) {
+            result = result.concat(splitted[i]+' ');
+      }
+      const options = {
+        method: 'GET',
+        url: 'https://spotify23.p.rapidapi.com/search/',
+        params: {q: result, type: 'tracks', offset: '0', limit: '1', numberOfTopResults: '1'},
+        headers: {
+          'X-RapidAPI-Key': process.env.RAPID_KEY_TOKEN,
+          'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'
+        }
+      };
+      
+      axios.request(options).then(function (response) {
+        msg.reply('https://open.spotify.com/track/'+response.data['tracks']['items'][0]['data']['id']);
+        result=''
+      }).catch(function (error) {
+        console.error(error);
+        result=''
+      });
+      }
       else if(splitted[1]==="med"){
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
