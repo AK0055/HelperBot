@@ -59,22 +59,25 @@ client.on("message", msg => {
         for (let i = 2; i < splitted.length; i++) {
             result = result.concat(splitted[i]+' ');
       }
-      const params = {
-        engine: "google",
-        q: result
-      };
-      const callback = function(data) {
-        try{
-        console.log(data["inline_videos"][0].link);
-        msg.reply(data["inline_videos"][0].link)
-        result=''}
-        catch(TypeError){
-          console.log(data["organic_results"][0].link);
-          msg.reply('Have fun with it! '+data["organic_results"][0].link)
-          result=''
+      const options = {
+        method: 'GET',
+        url: 'https://simple-youtube-search.p.rapidapi.com/search',
+        params: {query: result, type: 'video', safesearch: 'false'},
+        headers: {
+          'X-RapidAPI-Key': process.env.RAPID_KEY_TOKEN,
+          'X-RapidAPI-Host': 'simple-youtube-search.p.rapidapi.com'
         }
       };
-      search.json(params, callback);
+      
+      axios.request(options).then(function (response) {
+        msg.reply(response.data['results'][0]['url']);
+        result=''
+      }).catch(function (error) {
+        console.error(error);
+        result=''
+      });
+      
+    
       }
       else if(splitted[1]==="song"){
         for (let i = 2; i < splitted.length; i++) {
